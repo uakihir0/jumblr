@@ -1,6 +1,7 @@
 # Jumblr.
 
 [![Build Status](https://secure.travis-ci.org/tumblr/jumblr.png?branch=master)](http://travis-ci.org/tumblr/jumblr)
+[![JitPack](https://jitpack.io/v/uakihir0/jumblr.svg)](https://jitpack.io/#uakihir0/jumblr)
 
 A pleasant and complete Java wrapper for the Tumblr V2 API.
 
