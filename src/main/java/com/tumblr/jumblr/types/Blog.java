@@ -16,6 +16,11 @@ public class Blog extends Resource {
     private Long updated;
     private boolean ask, ask_anon;
 
+    private boolean primary;
+    private String uuid;
+    private String url;
+    private String type;
+
     /**
      * Get the description of this blog
      * @return String description
@@ -214,4 +219,19 @@ public class Blog extends Resource {
         this.name = name;
     }
 
+    public boolean isPrimary() {
+        return primary;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public String getType() {
+        return type;
+    }
 }

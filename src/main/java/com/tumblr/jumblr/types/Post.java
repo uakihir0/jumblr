@@ -66,6 +66,10 @@ public class Post extends Resource {
     private Long note_count;
     private List<Note> notes;
 
+    private Blog blog;
+    private String summary;
+    private List<Trail> trail;
+
     /**
      * Get the id of the author of the post
      * @return possibly null author id
@@ -456,4 +460,15 @@ public class Post extends Resource {
         return "[" + this.getClass().getName() + " (" + blog_name + ":" + id + ")]";
     }
 
+    public List<Trail> getTrail() {
+        return trail;
+    }
+
+    public Blog getBlog() {
+        return blog;
+    }
+
+    public String getSummary() {
+        return summary;
+    }
 }
