@@ -15,6 +15,9 @@ public class Blog extends Resource {
     private int posts, likes, followers;
     private Long updated;
     private boolean ask, ask_anon;
+    private Boolean followed;
+    private Boolean is_blocked_from_primary;
+    private boolean is_nsfw;
 
     private boolean primary;
     private String uuid;
@@ -233,5 +236,17 @@ public class Blog extends Resource {
 
     public String getType() {
         return type;
+    }
+
+    public Boolean getFollowed() {
+        return followed;
+    }
+
+    public Boolean getIsBlockedFromPrimary() {
+        return is_blocked_from_primary;
+    }
+
+    public boolean isIsNsfw() {
+        return is_nsfw;
     }
 }
