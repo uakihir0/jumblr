@@ -6,10 +6,9 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.tumblr.jumblr.JumblrClient;
-import com.tumblr.jumblr.types.Blog;
-import com.tumblr.jumblr.types.Post;
-import com.tumblr.jumblr.types.Resource;
-import com.tumblr.jumblr.types.User;
+import com.tumblr.jumblr.types.*;
+
+import java.lang.reflect.Type;
 import java.util.List;
 
 public class ResponseWrapper {
@@ -95,9 +94,12 @@ public class ResponseWrapper {
     }
 
     private Gson gsonParser() {
-        return new GsonBuilder().
-            registerTypeAdapter(Post.class, new PostDeserializer()).
-            create();
+        Type themeListType = new TypeToken<List<Theme>>() {}.getType();
+
+        return new GsonBuilder()
+                .registerTypeAdapter(Post.class, new PostDeserializer())
+                .registerTypeAdapter(themeListType, new ThemeDeserializer())
+                .create();
     }
 
 }

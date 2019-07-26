@@ -1,10 +1,12 @@
 package com.tumblr.jumblr.types;
 
+import java.util.List;
+
 public class BlogInTrail {
 
     private String name;
     private boolean active;
-    private Theme theme;
+    private List<Theme> theme;
     private boolean share_likes, share_following, can_be_followed;
 
     public String getName() {
@@ -15,7 +17,7 @@ public class BlogInTrail {
         return active;
     }
 
-    public Theme getTheme() {
+    public List<Theme> getTheme() {
         return theme;
     }
 
