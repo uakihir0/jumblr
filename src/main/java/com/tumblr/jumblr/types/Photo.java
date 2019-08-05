@@ -17,6 +17,7 @@ public class Photo {
         FILE("data");
 
         private final String prefix;
+
         private PhotoType(String prefix) {
             this.prefix = prefix;
         }
@@ -24,13 +25,39 @@ public class Photo {
         public String getPrefix() {
             return this.prefix;
         }
-    };
+    }
+
+    /**
+     * Class of byte array's media data.
+     */
+    public static class ByteFile {
+        private byte[] bytes;
+        private String name;
+
+        public byte[] getBytes() {
+            return bytes;
+        }
+
+        public void setBytes(byte[] bytes) {
+            this.bytes = bytes;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+    }
 
     private String caption;
     private List<PhotoSize> alt_sizes;
     private PhotoSize original_size;
 
+    // Photo Pattern
     private String source;
+    private ByteFile byteFile;
     private File file;
 
     /**
@@ -50,12 +77,21 @@ public class Photo {
     }
 
     /**
+     * Create a new photo with a source
+     * @param byteFile the byteFile for the photo
+     */
+    public Photo(ByteFile byteFile) {
+        this.byteFile = byteFile;
+    }
+
+    /**
      * Get the type of this photo
      * @return PhotoType the type of photo
      */
     public PhotoType getType() {
-        if (this.source != null) { return PhotoType.SOURCE; }
-        if (this.file   != null) { return PhotoType.FILE;   }
+        if (this.source   != null) { return PhotoType.SOURCE; }
+        if (this.file     != null) { return PhotoType.FILE;   }
+        if (this.byteFile != null) { return PhotoType.FILE;   }
         return null;
     }
 
@@ -92,6 +128,8 @@ public class Photo {
             return source;
         } else if (this.file != null) {
             return file;
+        } else if (this.byteFile != null) {
+            return byteFile;
         } else {
             return null;
         }

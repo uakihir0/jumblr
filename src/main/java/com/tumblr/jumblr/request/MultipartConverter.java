@@ -9,6 +9,8 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import com.tumblr.jumblr.types.Photo;
 import org.scribe.model.OAuthRequest;
 
 /**
@@ -69,13 +71,15 @@ public class MultipartConverter {
         for (Map.Entry<String, ?> entry : bodyMap.entrySet()) {
         	String key = entry.getKey();
             Object object = entry.getValue();
+
             if (object == null) { continue; }
+
             if (object instanceof File) {
                 File f = (File) object;
                 String mime = URLConnection.guessContentTypeFromName(f.getName());
 
-                byte[] result = new byte[(int)f.length()];
-                
+                byte[] result = new byte[(int) f.length()];
+
                 DataInputStream dis = new DataInputStream(new BufferedInputStream(new FileInputStream(f)));
                 try {
                     dis.readFully(result);
@@ -91,6 +95,18 @@ public class MultipartConverter {
                 this.addResponsePiece(message);
                 this.addResponsePiece(result);
                 message = new StringBuilder("\r\n");
+
+            } else if (object instanceof Photo.ByteFile) {
+                Photo.ByteFile f = (Photo.ByteFile) object;
+
+                String mime = URLConnection.guessContentTypeFromName(f.getName());
+                message.append("--").append(boundary).append("\r\n");
+                message.append("Content-Disposition: form-data; name=\"").append(key).append("\"; filename=\"").append(f.getName()).append("\"\r\n");
+                message.append("Content-Type: ").append(mime).append("\r\n\r\n");
+                this.addResponsePiece(message);
+                this.addResponsePiece(f.getBytes());
+                message = new StringBuilder("\r\n");
+
             } else {
                 message.append("--").append(boundary).append("\r\n");
                 message.append("Content-Disposition: form-data; name=\"").append(key).append("\"\r\n\r\n");

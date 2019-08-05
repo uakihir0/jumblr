@@ -74,14 +74,17 @@ public class PhotoPost extends Post {
      * Set the photo for this post
      * @param photo the photo to add
      */
-    public void setPhoto(Photo photo) {
+    public void addPhoto(Photo photo) {
         PhotoType type = photo.getType();
         if (postType != null && !postType.equals(type)) {
             throw new IllegalArgumentException("Photos must all be the same type (source or data)");
         } else if (postType == PhotoType.SOURCE && pendingPhotos.size() > 0) {
             throw new IllegalArgumentException("Only one source URL can be provided");
         }
-        pendingPhotos = new ArrayList<Photo>();
+
+        if (pendingPhotos == null) {
+            pendingPhotos = new ArrayList<Photo>();
+        }
         pendingPhotos.add(photo);
         this.postType = type;
     }
@@ -91,8 +94,8 @@ public class PhotoPost extends Post {
      * @param source the source to set
      * @throws IllegalArgumentException data is already set
      */
-    public void setSource(String source) {
-        setPhoto(new Photo(source));
+    public void addSource(String source) {
+        addPhoto(new Photo(source));
     }
 
     /**
@@ -100,8 +103,8 @@ public class PhotoPost extends Post {
      * @param file the file to read from
      * @throws IllegalArgumentException source is already set
      */
-    public void setData(File file) {
-        setPhoto(new Photo(file));
+    public void addData(File file) {
+        addPhoto(new Photo(file));
     }
 
     /**
@@ -131,6 +134,7 @@ public class PhotoPost extends Post {
             PhotoType type = pendingPhotos.get(0).getType();
             if (type == PhotoType.SOURCE) {
                 details.put(type.getPrefix(), pendingPhotos.get(0).getDetail());
+
             } else if (type == PhotoType.FILE) {
                 for (int i = 0; i < pendingPhotos.size(); i++) {
                     details.put(type.getPrefix() + "[" + i + "]", pendingPhotos.get(i).getDetail());
