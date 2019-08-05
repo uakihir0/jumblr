@@ -53,14 +53,14 @@ public class PhotoPostTest extends TypeTest {
 
     @Test(expected=IllegalArgumentException.class)
     public void setDataWithSource() {
-        post.setData(new File("some_path"));
-        post.setSource("something");
+        post.addData(new File("some_path"));
+        post.addSource("something");
     }
 
     @Test
     public void setDataWithoutSource() {
         File file = new File("some_path");
-        post.setData(file);
+        post.addData(file);
         Map<String, Object> detail = post.detail();
         assertEquals(file, detail.get("data[0]"));
         // clear
@@ -69,14 +69,14 @@ public class PhotoPostTest extends TypeTest {
 
     @Test(expected=IllegalArgumentException.class)
     public void setSourceWithData() {
-        post.setSource("something");
-        post.setData(new File("some_path"));
+        post.addSource("something");
+        post.addData(new File("some_path"));
     }
 
     @Test
     public void setSourceWithoutData() {
         String embedCode = "external";
-        post.setSource(embedCode);
+        post.addSource(embedCode);
         Map<String, Object> detail = post.detail();
         assertEquals(embedCode, detail.get("source"));
         // clear
