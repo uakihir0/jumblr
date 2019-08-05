@@ -8,10 +8,7 @@ import com.tumblr.jumblr.JumblrClient;
 import com.tumblr.jumblr.exceptions.JumblrException;
 import com.tumblr.jumblr.responses.JsonElementDeserializer;
 import com.tumblr.jumblr.responses.ResponseWrapper;
-import java.io.File;
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.util.Map;
+import com.tumblr.jumblr.types.Photo;
 import org.scribe.builder.ServiceBuilder;
 import org.scribe.builder.api.TumblrApi;
 import org.scribe.model.OAuthRequest;
@@ -20,8 +17,14 @@ import org.scribe.model.Token;
 import org.scribe.model.Verb;
 import org.scribe.oauth.OAuthService;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.util.Map;
+
 /**
  * Where requests are made from
+ *
  * @author jc
  */
 public class RequestBuilder {
@@ -67,7 +70,8 @@ public class RequestBuilder {
     /**
      * Posts an XAuth request. A new method is needed because the response from
      * the server is not a standard Tumblr JSON response.
-     * @param email the user's login email.
+     *
+     * @param email    the user's login email.
      * @param password the user's password.
      * @return the login token.
      */
@@ -111,10 +115,14 @@ public class RequestBuilder {
         OAuthRequest request = new OAuthRequest(Verb.POST, url);
 
         for (Map.Entry<String, ?> entry : bodyMap.entrySet()) {
-        	String key = entry.getKey();
-        	Object value = entry.getValue();
-        	if (value == null || value instanceof File) { continue; }
-            request.addBodyParameter(key,value.toString());
+            String key = entry.getKey();
+            Object value = entry.getValue();
+            if (value == null ||
+                    value instanceof File ||
+                    value instanceof Photo.ByteFile) {
+                continue;
+            }
+            request.addBodyParameter(key, value.toString());
         }
         request.addHeader("User-Agent", "jumblr/" + this.version);
 
@@ -123,9 +131,9 @@ public class RequestBuilder {
 
     public void setConsumer(String consumerKey, String consumerSecret) {
         service = new ServiceBuilder().
-        provider(TumblrApi.class).
-        apiKey(consumerKey).apiSecret(consumerSecret).
-        build();
+                provider(TumblrApi.class).
+                apiKey(consumerKey).apiSecret(consumerSecret).
+                build();
     }
 
     public void setToken(String token, String tokenSecret) {
