@@ -14,6 +14,7 @@ public class VideoPost extends Post {
     private String caption;
     private String embed, permalink_url;
     private File data;
+    private String video_url;
     private String thumbnail_url;
     private int thumbnail_width;
     private int thumbnail_height;
@@ -24,6 +25,10 @@ public class VideoPost extends Post {
      */
     public String getPermalinkUrl() {
         return permalink_url;
+    }
+    
+    public String getVideoUrl() {
+        return video_url;
     }
 
     /**
@@ -115,5 +120,4 @@ public class VideoPost extends Post {
         details.put("data", data);
         return details;
     }
-
 }
